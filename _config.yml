@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default"
-title                    : "Zuo Xudong | AI Researcher"
+title                    : "Zuo Xudong | Homepage"
 title_separator          : "-"
 name                     : &name "Zuo Xudong"
 description              : &description "personal description"
