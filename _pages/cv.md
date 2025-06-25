@@ -11,9 +11,8 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* Ph.D in Artificial Intelligence, University Of Science And Technology Of China, 2029 (expected)
+* B.S. in Electronic Information Science and Technology, HeFei University of Technology, 2025
 
 Work experience
 ======
@@ -21,25 +20,30 @@ Work experience
   * GitHub University
   * Duties includes: Updates and improvements to template
   * Supervisor: The Users
-
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Programming Languages
+  * Python (Proficient)
+  * C++ (Familiar)
+  * MATLAB
+
+* AI & Data Science Frameworks
+  * PyTorch
+  * Scikit-learn, Pandas, NumPy
+  * OpenCV
+
+* Developer Tools & Platforms
+  * Git & GitHub
+  * Docker
+  * Linux / Bash Scripting
+  * LaTeX
+
+* Technical Expertise
+  * Machine Learning / Deep Learning
+  * Control Theory
+  * Industrial Data Analysis
+  * Time-Series Forecasting
 
 Publications
 ======
@@ -59,6 +63,4 @@ Teaching
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
   
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+
