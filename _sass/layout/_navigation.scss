@@ -206,9 +206,9 @@
     display: flex;
 
     li {
-      display: block;   #table-cell;
+      display: block;
       vertical-align: middle;
-
+      
       &:first-child {
         font-weight: bold;
         text-wrap: wrap;
