@@ -204,9 +204,9 @@
 
   .visible-links {
     display: table;
-
+    justify-content: space-between;    
     li {
-      display: block;
+      display: table-cell;
       vertical-align: middle;
       
       &:first-child {
