@@ -41,3 +41,22 @@
     "vendor/font-awesome/brands",
     "vendor/magnific-popup/magnific-popup"
 ;
+/* assets/css/main.scss */
+
+/* --- 让导航栏链接均匀分布 --- */
+.greedy-nav {
+  /* 确保它是一个flex容器 (主题可能已设置，但写上更保险) */
+  display: flex;
+
+  /* * 这是关键属性！它会使各项两端对齐，项目之间的间隔都相等。
+   * 您也可以尝试 space-around (项目两侧的间隔相等)
+   * 或 space-evenly (项目之间及项目与边缘的间隔都相等)
+   * 来选择您最喜欢的效果。
+   */
+  justify-content: space-between;
+
+  /* * 必须让导航栏容器占满整个可用宽度，justify-content才能生效
+   * 否则它只会包裹住所有内容，没有多余空间可以“分配”
+   */
+  width: 100%;
+}
