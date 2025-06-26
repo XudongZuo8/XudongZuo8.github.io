@@ -41,6 +41,9 @@
     "vendor/font-awesome/brands",
     "vendor/magnific-popup/magnific-popup"
 ;
-main#main{
-padding-left:50pt;
+/* --- 调整主内容区域内层容器的左侧间距 --- */
+.page__inner-wrap{
+padding-left:4em;
 }
+
+
