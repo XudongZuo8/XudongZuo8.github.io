@@ -42,10 +42,6 @@
     "vendor/magnific-popup/magnific-popup"
 ;
 /* --- 调整主内容区域内层容器的左侧间距 --- */
-/* 使用更具体的选择器来提高优先级 */
-.page__inner-wrap {
-  padding-left: 3em;
-}
 .archive {
   /* 增加左内边距来向右推内容 */
   /* 依然建议使用 !important 来确保这条规则拥有最高优先级，覆盖主题默认值 */
