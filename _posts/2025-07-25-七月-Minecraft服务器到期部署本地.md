@@ -81,13 +81,13 @@ Java 版mc搭建完毕以后，想要使用命令一般无需更改文件设置�
 
 下面主要是因为买的服务器是2G内存，需要配置swap防止系统卡死。
 
-![image-20241225155314916](/Users/xudongzuo/Library/Application Support/typora-user-images/image-20241225155314916.png)
+![image-2024122501]()
 
-![image-20241225160804286](/Users/xudongzuo/Library/Application Support/typora-user-images/image-20241225160804286.png)
+![image-2024122502]()
 
 到这里就完成虚拟内存的配置了，实际效果如何等晚上打游戏再说。
 
-### 三、本地部署
+### 三、本地部署（这里才是今天做的事情）
 
  在服务器上有时会网络不稳定，而且到期续费要花钱，也可以选择本地部署，即开即玩。
 
