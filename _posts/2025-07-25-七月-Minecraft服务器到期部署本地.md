@@ -8,7 +8,7 @@
 
 **server基本命令：**
 
-https://minecraft.fandom.com/zh/wiki/Server.properties#Java%E7%89%88
+请查看[Minecraft维基百科](https://minecraft.fandom.com/zh/wiki/Server.properties#Java%E7%89%88)
 
 **1.如何启动游戏**
 
@@ -118,9 +118,7 @@ Minecraft 1.16.5 需要 Java 8 或更高版本。
 
 (2)启动服务器
 
-文件都下载到本地以后，如下图所示，在此文件夹打开terminal。
-
-<img src="/Users/xudongzuo/Library/Application Support/typora-user-images/image-20250725221033446.png" alt="image-20250725221033446" style="zoom:50%;" />
+文件都下载到本地以后，新建一文件夹用存储这些文件，在此文件夹打开terminal。
 
 ```bash
 java -Xmx2048M -Xms1024M -jar minecraft_server.1.16.5.jar nogui
@@ -145,11 +143,11 @@ ngrok tcp 25565
 # 会给一个类似0.tcp.ngrok.io:12345的地址，用这个连接
 ```
 
-![image-20250725222540069](/Users/xudongzuo/Library/Application Support/typora-user-images/image-20250725222540069.png)
+![image-2025072501](/images/images_for_blog/image-2025072501.png)
 
 我的是mac所以用homebrew下载的ngrok，也可以使用`frp`、`花生壳`、`cpolar`等其他内网穿透工具。
 
-![image-20250725232121715](/Users/xudongzuo/Library/Application Support/typora-user-images/image-20250725232121715.png)
+![image-20250725232121715](/images/images_for_blog/image-2025072502.png)
 
 现在把forwarding前面那个输入就行了，大功告成。
 
