@@ -26,8 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.highlight').forEach(block => {
     const btn = document.createElement('button');
     btn.innerHTML = '📋';
-    btn.style.cssText = 'position:absolute;top:8px;right:8px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.7;font-size:14px';
+    btn.style.cssText = 'position:absolute;top:4px;right:4px;width:28px;height:28px;padding:0;background:rgba(240,240,240,0.9);border:1px solid #ccc;border-radius:4px;cursor:pointer;opacity:0.7;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:10';
     btn.title = 'Copy code';
+    
+    // 鼠标悬停效果
+    btn.onmouseover = () => btn.style.opacity = '1';
+    btn.onmouseout = () => btn.style.opacity = '0.7';
     
     block.style.position = 'relative';
     btn.onclick = () => {
@@ -40,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
 <style>
 /* 隐藏默认的代码图标 */
 .highlight .rouge-gutter,
