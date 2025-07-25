@@ -12,4 +12,32 @@
 <!-- Support for MatJax -->
 <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+/* 隐藏默认的代码图标 */
+.highlight .rouge-gutter,
+.highlight .lineno {
+  display: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.highlight').forEach(block => {
+    const btn = document.createElement('button');
+    btn.innerHTML = '📋';
+    btn.style.cssText = 'position:absolute;top:8px;right:8px;padding:4px;background:transparent;border:none;cursor:pointer;opacity:0.7;font-size:14px';
+    btn.title = 'Copy code';
+    
+    block.style.position = 'relative';
+    btn.onclick = () => {
+      navigator.clipboard.writeText(block.querySelector('code').textContent);
+      btn.innerHTML = '✓';
+      setTimeout(() => btn.innerHTML = '📋', 1000);
+    };
+    
+    block.appendChild(btn);
+  });
+});
+</script>
 <!-- end custom head snippets -->
