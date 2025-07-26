@@ -1,5 +1,10 @@
-如何与女朋友一起玩Minecraft
-
+---
+title: 七月第一次周报
+date: 2025-07-24
+excerpt: "如何与女朋友一起玩Minecraft"
+tags:
+  - 游戏
+---
 ### 一、基本介绍
 
 **server基本命令：**
