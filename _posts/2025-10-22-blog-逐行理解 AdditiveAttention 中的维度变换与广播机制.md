@@ -1,16 +1,15 @@
 ---
-title: 逐行理解 AdditiveAttention 中的维度变换与广播机制
-
-date: 2025-10-23
-
-excerpt: 本文详细拆解了 PyTorch 中加性注意力（AdditiveAttention）的实现。我们将逐行跟踪张量（tensor）的维度变化，深入探讨 unsqueeze 和广播机制如何高效地计算所有 Query 和 Key 的配对，以及最终如何生成注意力分数。
-
+title: 逐行理解 AdditiveAttention 中的维度变换与广播机制  
+date: 2025-10-23  
+excerpt: 本文详细拆解了 PyTorch 中加性注意力（AdditiveAttention）的实现。我们将逐行跟踪张量（tensor）的维度变化，深入探讨 unsqueeze 和广播机制如何高效地计算所有 Query 和 Key 的配对，以及最终如何生成注意力分数。  
 tags:
-  - PyTorch
-  - Attention
-  - 深度学习
-  - NLP
+
+* PyTorch  
+* Attention  
+* 深度学习  
+* NLP
 ---
+
 在学习注意力机制时，`AdditiveAttention`（加性注意力）是一个经典实现。它出自《动手学深度学习》(d2l.ai) 课程，其代码实现非常精妙，尤其是 `forward` 函数中利用 PyTorch 广播（Broadcasting）机制来并行计算所有 Query 和 Key 的配对，堪称一行“神来之笔”。
 
 然而，这行代码 `features = queries.unsqueeze(2) + keys.unsqueeze(1)` 对于初学者来说却极易造成困惑。它到底是如何工作的？张量的维度在每一步究竟发生了什么变化？
@@ -65,8 +64,13 @@ class AdditiveAttention(nn.Module):
 
 假设我们的参数如下（简化起见，`batch_size=1`, `num_hiddens=2`）：
 
-- queries 形状为 (1, 2, 2)，代表有 2 个 query：$q_1 = [1, 2]$ 和 $q_2 = [3, 4]$。
-- keys 形状为 (1, 3, 2)，代表有 3 个 key：$k_1 = [10, 20]$, $k_2 = [30, 40]$, $k_3 = [50, 60]$。
+- queries 形状为 (1, 2, 2)，代表有 2 个 query：
+
+  $q_1 = [1, 2]$ 和 $q_2 = [3, 4]$。
+
+- keys 形状为 (1, 3, 2)，代表有 3 个 key：
+
+  $k_1 = [10, 20]$, $k_2 = [30, 40]$, $k_3 = [50, 60]$。
 
 1. **`A = queries.unsqueeze(2)`**
 
