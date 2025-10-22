@@ -20,7 +20,7 @@ tags:
 
 首先，让我们贴出我们要分析的目标代码：
 
-```
+```python
 #@save
 class AdditiveAttention(nn.Module):
     """加性注意力"""
@@ -76,11 +76,11 @@ class AdditiveAttention(nn.Module):
 
    - 在第 2 索引（第 3 维）插入一个新维度。
 
-   - 形状变化: `(1, 2, 2)` $\rightarrow$ `(1, 2, 1, 2)`
+   - 形状变化: (1, 2, 2) $\rightarrow$ (1, 2, 1, 2)
 
    - **值的布局**：
 
-     ```
+     ```python
      A = [  # Batch 0
            [  # num_queries = 2
              [[1, 2]],  # 这是 q1 (形状 [1, 2])
@@ -93,11 +93,11 @@ class AdditiveAttention(nn.Module):
 
    - 在第 1 索引（第 2 维）插入一个新维度。
 
-   - 形状变化: `(1, 3, 2)` $\rightarrow$ `(1, 1, 3, 2)`
+   - 形状变化: (1, 3, 2) $\rightarrow$ (1, 1, 3, 2)
 
    - **值的布局**：
 
-     ```
+     ```python
      B = [  # Batch 0
            [  # new_dim = 1
              [ [10, 20], [30, 40], [50, 60] ]  # 这是 k1, k2, k3 (形状 [3, 2])
@@ -119,7 +119,7 @@ class AdditiveAttention(nn.Module):
 
 相加时，内部的值变化如下：
 
-```
+```python
 # A 被"拉伸"后的样子 (虚拟的)
 [
   [
@@ -187,7 +187,7 @@ class AdditiveAttention(nn.Module):
 
 **测试数据：**
 
-```
+```python
 queries = torch.normal(0, 1, size=(2, 1, 20))
 keys = torch.ones((2, 10, 2))
 values = torch.arange(40, ...).reshape(1, 10, 4).repeat(2, 1, 1)
@@ -203,24 +203,24 @@ attention = AdditiveAttention(key_size=2, query_size=20, num_hiddens=8, dropout=
    - `values`: `(2, 10, 4)` (batch=2, num_kv=10, v_size=4)
    - `num_hiddens = 8`
 2. **`queries, keys = self.W_q(queries), self.W_k(keys)` (投影)**
-   - `W_q` 是 `Linear(20, 8)` $\rightarrow$ `queries` 形状变为 `(2, 1, 8)`
-   - `W_k` 是 `Linear(2, 8)` $\rightarrow$ `keys` 形状变为 `(2, 10, 8)`
+   - `W_q` 是 Linear(20, 8) $\rightarrow$ queries 形状变为 `(2, 1, 8)`
+   - `W_k` 是 Linear(2, 8) $\rightarrow$ keys 形状变为 `(2, 10, 8)`
    - **注意**：`query_size` 和 `key_size` 不同的问题在这里被解决了！它们都被投影到了相同的 `num_hiddens` 维度 (8)。
 3. **`...unsqueeze(2) + ...unsqueeze(1)` (广播)**
-   - `q_unsqueezed`: `(2, 1, 8)` $\rightarrow$ `(2, 1, 1, 8)`
-   - `k_unsqueezed`: `(2, 10, 8)` $\rightarrow$ `(2, 1, 10, 8)`
+   - `q_unsqueezed`: (2, 1, 8) $\rightarrow$ (2, 1, 1, 8)
+   - `k_unsqueezed`: (2, 10, 8) $\rightarrow$ (2, 1, 10, 8)
    - 广播相加 `(2, 1, 1, 8) + (2, 1, 10, 8)`
    - `features` 形状: `(2, 1, 10, 8)`
 4. **`scores = self.w_v(features).squeeze(-1)` (打分)**
    - `self.w_v` 是 `Linear(8, 1)` $\rightarrow$ `features` 形状变为 `(2, 1, 10, 1)`
-   - `.squeeze(-1)` $\rightarrow$ `scores` 形状变为 `(2, 1, 10)`
+   - .squeeze(-1) $\rightarrow$ scores` 形状变为 `(2, 1, 10)
 5. **`masked_softmax(scores, valid_lens)` (归一化)**
    - `softmax` 沿着 `dim = -1` (即 10) 操作。
    - `attention_weights` 形状: `(2, 1, 10)`
 6. **`torch.bmm(..., values)` (加权求和)**
    - 输入 1 (`attention_weights`): `(2, 1, 10)`
    - 输入 2 (`values`): `(2, 10, 4)`
-   - 批量矩阵乘法 (`bmm`) 对每个批次执行：`(1, 10)` @ `(10, 4)` $\rightarrow$ `(1, 4)`
+   - 批量矩阵乘法 (`bmm`) 对每个批次执行：(1, 10)@ (10, 4) $\rightarrow$ (1, 4)
    - **最终输出形状**: `(2, 1, 4)`
 
 ### 总结
