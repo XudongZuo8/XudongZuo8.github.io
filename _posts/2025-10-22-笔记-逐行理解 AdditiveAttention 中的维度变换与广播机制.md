@@ -4,10 +4,10 @@ date: 2025-10-23
 excerpt: 本文详细拆解了 PyTorch 中加性注意力（AdditiveAttention）的实现。我们将逐行跟踪张量（tensor）的维度变化，深入探讨 unsqueeze 和广播机制如何高效地计算所有 Query 和 Key 的配对，以及最终如何生成注意力分数。  
 tags:
 
-* PyTorch  
-* Attention  
-* 深度学习  
-* NLP
+  -PyTorch
+  -Attention  
+  -深度学习  
+  -NLP
 ---
 
 在学习注意力机制时，`AdditiveAttention`（加性注意力）是一个经典实现。它出自《动手学深度学习》(d2l.ai) 课程，其代码实现非常精妙，尤其是 `forward` 函数中利用 PyTorch 广播（Broadcasting）机制来并行计算所有 Query 和 Key 的配对，堪称一行“神来之笔”。
