@@ -1,3 +1,11 @@
+---
+title: 特征检测与匹配
+date: 2025-09-24
+excerpt: "仅做一个课堂笔记的尝试。"
+tags:
+  - 笔记
+---
+
 # 课程笔记：特征检测与匹配 (Feature Detection and Matching)
 
 > **- 来源**: `[USTC 图像理解]`

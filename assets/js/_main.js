@@ -140,4 +140,46 @@ $(document).ready(function () {
     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
   });
 
+  // Add copy buttons to code blocks
+  $('div.highlighter-rouge, figure.highlight').each(function() {
+    var $codeBlock = $(this);
+    var $button = $('<button class="copy-code-button">Copy</button>');
+
+    $button.on('click', function() {
+      var code = $codeBlock.find('pre').text();
+
+      // Use modern clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(code).then(function() {
+          $button.text('Copied!').addClass('copied');
+          setTimeout(function() {
+            $button.text('Copy').removeClass('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('Failed to copy: ', err);
+        });
+      } else {
+        // Fallback for older browsers
+        var textArea = document.createElement('textarea');
+        textArea.value = code;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          $button.text('Copied!').addClass('copied');
+          setTimeout(function() {
+            $button.text('Copy').removeClass('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+        document.body.removeChild(textArea);
+      }
+    });
+
+    $codeBlock.append($button);
+  });
+
 });
