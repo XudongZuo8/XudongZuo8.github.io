@@ -1,7 +1,7 @@
 ---
 title: MineCraft从服务器部署到本地部署
 date: 2025-07-25
-excerpt: "如何与女朋友一起玩Minecraft"
+excerpt: "记录将 Minecraft 服务器从云端迁移到本地的过程。"
 tags:
   - 游戏
 ---
@@ -177,6 +177,5 @@ ngrok config add-authtoken 你的token
 ```bash
 ngrok tcp 25565
 ```
-
 
 

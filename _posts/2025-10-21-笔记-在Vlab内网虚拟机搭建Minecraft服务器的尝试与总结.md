@@ -1,7 +1,7 @@
 ---
 title: 在Vlab内网虚拟机搭建Minecraft服务器的尝试与总结
 date: 2025-07-25
-excerpt: "本次的目标是在中科大（USTC）Vlab 提供的内网虚拟机上搭建一个 Paper Minecraft (1.21.8) 服务器，并尝试通过内网穿透使其能从公网访问。"
+excerpt: "记录在 USTC Vlab 内网虚拟机搭建并公网访问 Minecraft 服务器的尝试。"
 tags:
   - 笔记
 ---

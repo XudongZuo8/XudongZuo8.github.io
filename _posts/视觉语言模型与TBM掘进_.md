@@ -1,7 +1,7 @@
 ---
 title: Gemini调研的如何
 date: 2025-07-26
-excerpt: "VLM在TBM自主掘进的应用前景"
+excerpt: "调研视觉语言模型在 TBM 自主掘进中的应用前景。"
 tags:
   - 自主掘进
 ---

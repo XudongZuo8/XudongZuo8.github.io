@@ -1,7 +1,7 @@
 ---
 title: 逐行理解 AdditiveAttention 中的维度变换与广播机制  
 date: 2025-10-23  
-excerpt: 本文详细拆解了 PyTorch 中加性注意力（AdditiveAttention）的实现。我们将逐行跟踪张量（tensor）的维度变化，深入探讨 unsqueeze 和广播机制如何高效地计算所有 Query 和 Key 的配对，以及最终如何生成注意力分数。  
+excerpt: "逐行解析 AdditiveAttention 中的维度变化与 PyTorch 广播机制。"
 tags:
 
   -PyTorch
