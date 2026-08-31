@@ -272,3 +272,117 @@ Mac 睡眠 / 关机 / 断网
 这次配置最后留下的工程经验很简单：
 
 > 开发工具的连接，服务于人的操作；长期基础设施连接，应该由独立的守护进程维护。
+
+## 后续排障：为什么已经配置 DIRECT，VS Code SSH 还是很慢？
+
+隧道稳定之后，我又遇到过一个更隐蔽的问题：Mac 开着 Shadowrocket 时，VS Code Remote-SSH 偶尔很慢，甚至提示：
+
+~~~text
+Failed to set up dynamic port forwarding connection over SSH
+~~~
+
+当时已经做了两件事：
+
+- 给 <code>connect.bjb2.seetacloud.com</code> 配置 <code>DIRECT</code> 和 <code>always-real-ip</code>。
+- 把当时解析到的真实 IP <code>106.38.204.136</code> 加入 TUN 旁路，即 <code>106.38.204.136/32</code>。
+
+再执行：
+
+~~~bash
+route -n get 106.38.204.136
+~~~
+
+看到 <code>interface: en0</code>，很容易就下结论：“SSH 已经直连了。”但 VS Code 的日志给出了相反的证据：
+
+~~~text
+Authenticated to connect.bjb2.seetacloud.com ([198.18.0.15]:55000)
+~~~
+
+<code>198.18.0.15</code> 是 Fake-IP。也就是说，路由查询检查的是 <code>106.38.204.136</code>，而应用实际连接的是 <code>198.18.0.15</code>。前一个命令只能证明“如果访问真实 IP，会从 en0 出去”，不能证明 VS Code 当前真的访问了这个 IP。
+
+<div class="blog-diagram diagram-route-check" role="img" aria-label="对比路由查询检查真实 IP、应用实际连接 Fake-IP，以及将 SSH HostName 改成真实 IP后的三种情况">
+  <span class="diagram-kicker">排错陷阱</span>
+  <div class="diagram-caption">“查真实 IP 的路由”不等于“应用真的连接了真实 IP”</div>
+  <div class="route-check-grid">
+    <div class="route-check-card">
+      <span class="route-check-label">① 只查真实 IP</span>
+      <strong><code>route -n get 106.38.204.136</code></strong>
+      <div class="route-check-detail">结果：<code>interface: en0</code><br>只能说明这个 IP 的路由。</div>
+    </div>
+    <span class="route-check-arrow" aria-hidden="true">≠</span>
+    <div class="route-check-card is-misleading">
+      <span class="route-check-label">② 应用实际连接</span>
+      <strong>VS Code / ssh</strong>
+      <div class="route-check-detail">域名 → <code>198.18.0.15</code> Fake-IP → Shadowrocket TUN<br>所以仍可能慢或超时。</div>
+    </div>
+    <span class="route-check-arrow" aria-hidden="true">→</span>
+    <div class="route-check-card is-final">
+      <span class="route-check-label">③ 最终修改</span>
+      <strong><code>HostName = 106.38.204.136</code></strong>
+      <div class="route-check-detail">SSH 跳过域名解析，直接走真实 IP 和 <code>en0</code>。</div>
+    </div>
+  </div>
+</div>
+
+因此，排查 SSH 时应该先看应用真正连接的 IP，再查询这个 IP 的路由：
+
+~~~bash
+ssh -vvv autodl
+route -n get <应用实际连接的 IP>
+~~~
+
+## 最终优化：SSH HostName 直接使用真实 IP
+
+由于当时已经确认了 AutoDL SSH 网关的真实 IP，最简单的做法是让 SSH 层完全绕过域名解析。开发连接和代理隧道都改成直接使用这个 IP：
+
+~~~ssh
+Host autodl
+  HostName 106.38.204.136
+  Port 55000
+  User root
+  IdentityFile ~/.ssh/autodl_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
+
+Host autodl-proxy
+  HostName 106.38.204.136
+  Port 55000
+  User root
+  IdentityFile ~/.ssh/autodl_ed25519
+  IdentitiesOnly yes
+  RemoteForward 127.0.0.1:17897 127.0.0.1:1082
+  ExitOnForwardFailure yes
+  ServerAliveInterval 20
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
+~~~
+
+这样，SSH 控制连接变成：
+
+~~~text
+VS Code / ssh
+      ↓
+106.38.204.136:55000
+      ↓
+en0 → AutoDL
+~~~
+
+而 AutoDL 访问外网的链路不变，仍然是：
+
+~~~text
+AutoDL:17897
+      ↓ SSH RemoteForward
+Mac:1082
+      ↓
+Shadowrocket → Internet
+~~~
+
+这也解释了为什么没有必要为了这个现象关闭 VS Code 的 dynamic forwarding：后续日志表明 dynamic forwarding 本身可以正常建立，真正的问题是 SSH 入口仍然落到了 Fake-IP。
+
+直接写 IP 的代价是它可能随云平台实例或网关变化。以后如果突然无法连接，先重新查询域名对应的真实公网 IP，再同步更新 SSH 配置和 Shadowrocket 的 TUN 旁路规则。
+
+这次排障最值得记下来的原则是：
+
+> Route lookup 只有在查询“应用实际连接的那个 IP”时才有意义。
